@@ -5,9 +5,9 @@ import dotenv from 'dotenv';
 import giftsRouter from './routes/gifts.js';
 import ordersRouter from './routes/orders.js';
 import paymentRouter from './routes/payment.js';
-
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
+import connectToDatabase from './config/database.js';
 
 // Load environment variables
 dotenv.config();
@@ -47,8 +47,6 @@ app.use((req, res) => {
 });
 
 // MongoDB Connection - use cached connection for Vercel serverless
-import connectToDatabase from './config/database.js';
-
 // Initialize connection for local development
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   mongoose.connect(process.env.MONGODB_URI)
