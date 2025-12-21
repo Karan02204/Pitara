@@ -21,14 +21,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/gifts', giftsRouter);
-app.use('/api/orders', ordersRouter);
-app.use('/api/payment', paymentRouter);
-app.use('/api/auth', authRouter);
-app.use('/api/users', usersRouter);
+app.use('/gifts', giftsRouter);
+app.use('/orders', ordersRouter);
+app.use('/payment', paymentRouter);
+app.use('/auth', authRouter);
+app.use('/users', usersRouter);
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Gifty Hub API is running' });
 });
 
