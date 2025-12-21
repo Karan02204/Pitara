@@ -8,6 +8,7 @@ import paymentRouter from './routes/payment.js';
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
 import connectToDatabase from './config/database.js';
+import ensureDbConnection from './middleware/dbConnect.js';
 
 // Load environment variables
 dotenv.config();
@@ -19,6 +20,11 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// For Vercel serverless, ensure DB connection on each request
+if (process.env.VERCEL) {
+  app.use(ensureDbConnection);
+}
 
 // Routes
 app.use('/gifts', giftsRouter);
