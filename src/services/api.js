@@ -131,3 +131,46 @@ export async function fetchOrders(filters = {}) {
 export async function checkAPIHealth() {
   return fetchAPI('/health');
 }
+
+/**
+ * Create a Razorpay order
+ * @param {number} amount - Order amount in INR
+ * @param {Object} orderData - Order data for later use
+ * @returns {Promise<Object>} Razorpay order details
+ */
+export async function createRazorpayOrder(amount, orderData) {
+  const token = localStorage.getItem('token');
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({ amount, currency: 'INR' }),
+  };
+  
+  if (token) {
+    options.headers = {
+      'Authorization': `Bearer ${token}`
+    };
+  }
+  
+  return fetchAPI('/payment/create-order', options);
+}
+
+/**
+ * Verify Razorpay payment and create order
+ * @param {Object} paymentData - Payment data from Razorpay
+ * @returns {Promise<Object>} Created order object
+ */
+export async function verifyPayment(paymentData) {
+  const token = localStorage.getItem('token');
+  const options = {
+    method: 'POST',
+    body: JSON.stringify(paymentData),
+  };
+  
+  if (token) {
+    options.headers = {
+      'Authorization': `Bearer ${token}`
+    };
+  }
+  
+  return fetchAPI('/payment/verify', options);
+}

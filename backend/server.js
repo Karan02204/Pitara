@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import giftsRouter from './routes/gifts.js';
 import ordersRouter from './routes/orders.js';
+import paymentRouter from './routes/payment.js';
 
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/gifts', giftsRouter);
 app.use('/api/orders', ordersRouter);
+app.use('/api/payment', paymentRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 
