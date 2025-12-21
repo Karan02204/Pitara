@@ -27,14 +27,14 @@ if (process.env.VERCEL) {
 }
 
 // Routes
-app.use('/gifts', giftsRouter);
-app.use('/orders', ordersRouter);
-app.use('/payment', paymentRouter);
-app.use('/auth', authRouter);
-app.use('/users', usersRouter);
+app.use('/api/gifts', giftsRouter);
+app.use('/api/orders', ordersRouter);
+app.use('/api/payment', paymentRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/users', usersRouter);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Gifty Hub API is running' });
 });
 
