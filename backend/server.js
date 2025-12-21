@@ -46,24 +46,27 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log('✅ Connected to MongoDB');
-    // Start server only in local development (not in Vercel serverless)
-    if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+// MongoDB Connection - use cached connection for Vercel serverless
+import connectToDatabase from './config/database.js';
+
+// Initialize connection for local development
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+      console.log('✅ Connected to MongoDB');
       app.listen(PORT, () => {
         console.log(`🚀 Server is running on http://localhost:${PORT}`);
         console.log(`📊 API Health: http://localhost:${PORT}/api/health`);
       });
-    }
-  })
-  .catch((error) => {
-    console.error('❌ MongoDB connection error:', error);
-    if (process.env.NODE_ENV !== 'production') {
+    })
+    .catch((error) => {
+      console.error('❌ MongoDB connection error:', error);
       process.exit(1);
-    }
-  });
+    });
+} else {
+  // For Vercel, connection will be established on first request
+  connectToDatabase().catch(err => console.error('Initial DB connection failed:', err));
+}
 
 // Handle graceful shutdown
 process.on('SIGINT', async () => {
@@ -74,3 +77,4 @@ process.on('SIGINT', async () => {
 
 // Export app for Vercel serverless function
 export default app;
+
