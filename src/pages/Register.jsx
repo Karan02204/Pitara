@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
-import Navbar from '../components/layout/Navbar';
-import Footer from '../components/layout/Footer';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -47,9 +45,7 @@ export default function Register() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-20">
+    <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -155,8 +151,6 @@ export default function Register() {
             </CardContent>
           </Card>
         </motion.div>
-      </main>
-      <Footer />
     </div>
   );
 }
