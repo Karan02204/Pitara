@@ -1,4 +1,4 @@
-# Gifty Hub - Premium Gift Shop
+# Pitara - Premium Gift Shop
 
 A beautiful, modern gift shop application built with React, Node.js, and MongoDB. Features a curated gift catalog, custom hamper builder, and seamless checkout experience.
 
