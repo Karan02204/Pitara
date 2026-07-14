@@ -41,7 +41,10 @@ export const CartProvider = ({ children }) => {
                 JSON.stringify(item.customization) === JSON.stringify(newItem.customization));
             if (existingIndex >= 0) {
                 const updated = [...prev];
-                updated[existingIndex].quantity += newItem.quantity;
+                updated[existingIndex] = {
+                    ...updated[existingIndex],
+                    quantity: updated[existingIndex].quantity + newItem.quantity
+                };
                 return updated;
             }
             return [...prev, newItem];

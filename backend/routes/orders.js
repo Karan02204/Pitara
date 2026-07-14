@@ -6,75 +6,75 @@ import User from '../models/User.js';
 
 const router = express.Router();
 
-// POST create new order
-router.post('/', async (req, res) => {
-  try {
-    const { customerInfo, items, totalPrice, notes } = req.body;
+// // POST create new order
+// router.post('/', async (req, res) => {
+//   try {
+//     const { customerInfo, items, totalPrice, notes } = req.body;
 
-    // Validate required fields
-    if (!customerInfo || !items || !totalPrice) {
-      return res.status(400).json({ 
-        error: 'Missing required fields',
-        message: 'customerInfo, items, and totalPrice are required'
-      });
-    }
+//     // Validate required fields
+//     if (!customerInfo || !items || !totalPrice) {
+//       return res.status(400).json({ 
+//         error: 'Missing required fields',
+//         message: 'customerInfo, items, and totalPrice are required'
+//       });
+//     }
 
-    if (!items.length) {
-      return res.status(400).json({ 
-        error: 'Invalid order',
-        message: 'Order must contain at least one item'
-      });
-    }
+//     if (!items.length) {
+//       return res.status(400).json({ 
+//         error: 'Invalid order',
+//         message: 'Order must contain at least one item'
+//       });
+//     }
 
-    // Create new order
-    const order = new Order({
-      customerInfo,
-      items,
-      totalPrice,
-      notes: notes || ''
-    });
+//     // Create new order
+//     const order = new Order({
+//       customerInfo,
+//       items,
+//       totalPrice,
+//       notes: notes || ''
+//     });
 
-    // Check for authentication token to link user
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-      try {
-        const token = req.headers.authorization.split(' ')[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        order.user = decoded.id;
-      } catch (err) {
-        console.log('Token verification failed for order creation', err.message);
-        // Continue creating order as guest
-      }
-    }
+//     // Check for authentication token to link user
+//     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+//       try {
+//         const token = req.headers.authorization.split(' ')[1];
+//         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//         order.user = decoded.id;
+//       } catch (err) {
+//         console.log('Token verification failed for order creation', err.message);
+//         // Continue creating order as guest
+//       }
+//     }
 
-    // Save order AFTER setting user field
-    await order.save();
+//     // Save order AFTER setting user field
+//     await order.save();
     
-    // Add order to user's history if authenticated
-    if (order.user) {
-      await User.findByIdAndUpdate(order.user, { $push: { orders: order._id } });
-    }
+//     // Add order to user's history if authenticated
+//     if (order.user) {
+//       await User.findByIdAndUpdate(order.user, { $push: { orders: order._id } });
+//     }
 
-    // Send order confirmation email (don't block order creation if email fails)
-    try {
-      await sendOrderConfirmationEmail(order);
-    } catch (emailError) {
-      console.error('Failed to send order confirmation email:', emailError);
-      // Continue anyway - order was created successfully
-    }
+//     // Send order confirmation email (don't block order creation if email fails)
+//     try {
+//       await sendOrderConfirmationEmail(order);
+//     } catch (emailError) {
+//       console.error('Failed to send order confirmation email:', emailError);
+//       // Continue anyway - order was created successfully
+//     }
 
-    res.status(201).json({
-      success: true,
-      message: 'Order created successfully',
-      order
-    });
-  } catch (error) {
-    console.error('Error creating order:', error);
-    res.status(400).json({ 
-      error: 'Failed to create order', 
-      message: error.message 
-    });
-  }
-});
+//     res.status(201).json({
+//       success: true,
+//       message: 'Order created successfully',
+//       order
+//     });
+//   } catch (error) {
+//     console.error('Error creating order:', error);
+//     res.status(400).json({ 
+//       error: 'Failed to create order', 
+//       message: error.message 
+//     });
+//   }
+// });
 
 // GET order by ID
 router.get('/:id', async (req, res) => {

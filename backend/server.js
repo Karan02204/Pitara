@@ -64,14 +64,14 @@ app.use((req, res) => {
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
-      console.log('✅ Connected to MongoDB');
+      console.log('Connected to MongoDB');
       app.listen(PORT, () => {
-        console.log(`🚀 Server is running on http://localhost:${PORT}`);
-        console.log(`📊 API Health: http://localhost:${PORT}/api/health`);
+        console.log(`Server is running on http://localhost:${PORT}`);
+        console.log(`API Health: http://localhost:${PORT}/api/health`);
       });
     })
     .catch((error) => {
-      console.error('❌ MongoDB connection error:', error);
+      console.error('MongoDB connection error:', error);
       process.exit(1);
     });
 } else {
