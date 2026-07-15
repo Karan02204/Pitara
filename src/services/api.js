@@ -68,27 +68,6 @@ export async function fetchGiftsByCategory(category) {
 }
 
 /**
- * Create a new order
- * @param {Object} orderData - Order data including customerInfo, items, totalPrice
- * @returns {Promise<Object>} Created order object
- */
-export async function createOrder(orderData) {
-  const token = localStorage.getItem('token');
-  const options = {
-    method: 'POST',
-    body: JSON.stringify(orderData),
-  };
-  
-  if (token) {
-    options.headers = {
-      'Authorization': `Bearer ${token}`
-    };
-  }
-  
-  return fetchAPI('/orders', options);
-}
-
-/**
  * Fetch order by ID
  * @param {string} id - Order ID
  * @returns {Promise<Object>} Order object

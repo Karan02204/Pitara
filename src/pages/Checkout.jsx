@@ -6,10 +6,6 @@ import { Button } from '../components/ui/button';
 import { useCart, calculateItemPrice } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from '../hooks/use-toast';
-import { createOrder } from '../services/api';
-import { cn } from '../lib/utils';
-import LottieAnimation from '../components/animations/LottieAnimation';
-import { getAnimation } from '../config/animations';
 
 const Checkout = () => {
   const navigate = useNavigate();
