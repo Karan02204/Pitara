@@ -10,7 +10,6 @@ A beautiful, modern gift shop application built with React, Node.js, and MongoDB
 - **Custom Hamper Builder** - Create personalized gift hampers
 - **Shopping Cart** - Full cart management with customization options
 - **Responsive Design** - Works perfectly on all devices
-- **Dark Mode Ready** - Theme support with next-themes
 
 ### Backend
 - **RESTful API** - Clean, organized Express.js endpoints
@@ -87,8 +86,14 @@ gifty-hub-jsx/
 │   │   ├── Gift.js
 │   │   ├── Order.js
 │   │   └── User.js
+|   ├── controllers/             # controllers
+│   │   ├── authController.js
+│   │   └── userController.js 
 │   ├── routes/             # API routes
 │   │   ├── gifts.js
+|   |   ├── auth.js
+|   |   ├── payment.js
+|   |   ├── users.js
 │   │   └── orders.js
 │   ├── utils/              # Utility scripts
 │   │   └── seedDatabase.js
@@ -102,7 +107,8 @@ gifty-hub-jsx/
 │   │   ├── layout/        # Layout components
 │   │   └── ui/            # UI components
 │   ├── contexts/          # React contexts
-│   │   └── CartContext.jsx
+│   │   ├── CartContext.jsx
+        └── AuthContext.jsx
 │   ├── pages/             # Page components
 │   │   ├── Index.jsx
 │   │   ├── Catalog.jsx
@@ -166,7 +172,7 @@ gifty-hub-jsx/
 - `DELETE /api/gifts/:id` - Delete gift (admin)
 
 ### Orders
-- `POST /api/orders` - Create new order
+- `POST /api/payment/create-order` - Create new order
 - `GET /api/orders/:id` - Get order by ID
 - `GET /api/orders/number/:orderNumber` - Get order by number
 - `GET /api/orders` - List all orders (admin)
@@ -205,6 +211,7 @@ gifty-hub-jsx/
 - View customization details
 - Real-time price updates
 - Persistent cart state
+- Performance Optimised with useMemo
 
 ### Checkout Process
 - Two-step checkout (Shipping → Payment)
