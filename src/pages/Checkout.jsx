@@ -230,6 +230,48 @@ const Checkout = () => {
         </motion.div>
 
         <div className="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+
+          {/* Order Summary */}
+          <div className="lg:col-span-1">
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="sticky top-24 bg-card rounded-2xl p-6 shadow-medium">
+              <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+                Order Summary
+              </h3>
+
+              <div className="space-y-3 max-h-60 overflow-y-auto mb-4">
+                {items.map((item) => (<div key={item.id} className="flex gap-3">
+                    <img src={item.image} alt={item.name} className="w-12 h-12 rounded-lg object-cover"/>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">
+                        {item.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Qty: {item.quantity}
+                      </p>
+                    </div>
+                  </div>))}
+              </div>
+
+              <div className="border-t border-border pt-4 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span className="text-foreground">₹{Math.round(totalPrice)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Shipping</span>
+                  <span className="text-primary font-medium">Free</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Tax</span>
+                  <span className="text-foreground">₹{Math.round(tax)}</span>
+                </div>
+                <div className="flex justify-between font-semibold text-lg pt-2 border-t border-border">
+                  <span className="text-foreground">Total</span>
+                  <span className="text-primary">₹{Math.round(total)}</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
           {/* Form Section */}
           <div className="lg:col-span-2">
             <motion.form initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} onSubmit={handleShippingSubmit} className="bg-card rounded-2xl p-6 shadow-soft space-y-6">
@@ -302,47 +344,7 @@ const Checkout = () => {
               </motion.form>
           </div>
 
-          {/* Order Summary */}
-          <div className="lg:col-span-1">
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="sticky top-24 bg-card rounded-2xl p-6 shadow-medium">
-              <h3 className="font-display text-lg font-semibold text-foreground mb-4">
-                Order Summary
-              </h3>
-
-              <div className="space-y-3 max-h-60 overflow-y-auto mb-4">
-                {items.map((item) => (<div key={item.id} className="flex gap-3">
-                    <img src={item.image} alt={item.name} className="w-12 h-12 rounded-lg object-cover"/>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground truncate">
-                        {item.name}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Qty: {item.quantity}
-                      </p>
-                    </div>
-                  </div>))}
-              </div>
-
-              <div className="border-t border-border pt-4 space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Subtotal</span>
-                  <span className="text-foreground">₹{Math.round(totalPrice)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Shipping</span>
-                  <span className="text-primary font-medium">Free</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Tax</span>
-                  <span className="text-foreground">₹{Math.round(tax)}</span>
-                </div>
-                <div className="flex justify-between font-semibold text-lg pt-2 border-t border-border">
-                  <span className="text-foreground">Total</span>
-                  <span className="text-primary">₹{Math.round(total)}</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+          
         </div>
       </div>
     </div>);
