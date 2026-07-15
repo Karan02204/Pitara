@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback , useMemo} from 'react';
+import { createContext, useContext, useState, useEffect, useCallback , useMemo} from 'react';
 const CartContext = createContext(undefined);
 const calculateItemPrice = (item) => {
     let price = item.basePrice;
@@ -68,7 +68,7 @@ export const CartProvider = ({ children }) => {
     const totalItems = useMemo(() => items.reduce((sum, item) => sum + item.quantity, 0), [items]);
     const totalPrice = useMemo(() => items.reduce((sum, item) => sum + calculateItemPrice(item), 0), [items]);
 
-    const value = useMemo( () => {
+    const value = useMemo( () => ({
             items,
             addItem,
             removeItem,
@@ -76,7 +76,7 @@ export const CartProvider = ({ children }) => {
             clearCart,
             totalItems,
             totalPrice
-    }, [items, addItem, removeItem, updateQuantity, clearCart, totalItems, totalPrice]);
+    }), [items, addItem, removeItem, updateQuantity, clearCart, totalItems, totalPrice]);
     
     return (<CartContext.Provider value={value}>
       {children}
