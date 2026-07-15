@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useEffect, useContext , useCallback } from 'react';
 import { API_URL } from '../config/api';
 
 const AuthContext = createContext();
@@ -37,88 +37,76 @@ export const AuthProvider = ({ children }) => {
     checkLoggedIn();
   }, []);
 
-  const login = async (email, password) => {
-    try {
-      const res = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+  const login = useCallback(async (email, password) => {
+    const res = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
-      localStorage.setItem('token', data.token);
-      setUser(data);
-      return data;
-    } catch (error) {
-      throw error;
+    if (!res.ok) {
+      throw new Error(data.error || 'Login failed');
     }
-  };
 
-  const register = async (name, email, password) => {
-    try {
-      const res = await fetch(`${API_URL}/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password })
-      });
+    localStorage.setItem('token', data.token);
+    setUser(data);
+    return data;
+  },[]);
 
-      const data = await res.json();
+  const register = useCallback(async (name, email, password) => {
+    const res = await fetch(`${API_URL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
 
-      if (!res.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
+    const data = await res.json();
 
-      localStorage.setItem('token', data.token);
-      setUser(data);
-      return data;
-    } catch (error) {
-      throw error;
+    if (!res.ok) {
+      throw new Error(data.error || 'Registration failed');
     }
-  };
 
-  const logout = () => {
+    localStorage.setItem('token', data.token);
+    setUser(data);
+    return data;
+  },[]);
+
+  const logout = useCallback(() => {
     localStorage.removeItem('token');
     setUser(null);
-  };
+  },[]);
 
-  const updateProfile = async (userData) => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/users/profile`, {
-        method: 'PUT',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(userData)
-      });
+  const updateProfile = useCallback(async (userData) => {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API_URL}/users/profile`, {
+      method: 'PUT',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(userData)
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.error || 'Update failed');
-      }
-
-      setUser(prev => ({ ...prev, ...data }));
-      return data;
-    } catch (error) {
-      throw error;
+    if (!res.ok) {
+      throw new Error(data.error || 'Update failed');
     }
-  };
 
-  const value = {
+    setUser(prev => ({ ...prev, ...data }));
+    return data;
+  },[]);
+
+  const value = useMemo(() => ({
     user,
     loading,
     login,
     register,
     logout,
     updateProfile
-  };
+  }) , [user , loading , login , register , logout , updateProfile]);
 
   return (
     <AuthContext.Provider value={value}>
