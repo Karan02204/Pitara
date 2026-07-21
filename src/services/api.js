@@ -115,10 +115,9 @@ export async function checkAPIHealth() {
 /**
  * Create a Razorpay order
  * @param {number} amount - Order amount in INR
- * @param {Object} orderData - Order data for later use
  * @returns {Promise<Object>} Razorpay order details
  */
-export async function createRazorpayOrder(amount, orderData) {
+export async function createRazorpayOrder(amount) {
   const token = localStorage.getItem('token');
   const options = {
     method: 'POST',
