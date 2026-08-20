@@ -1,28 +1,26 @@
-let envUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-if (envUrl.endsWith('/')) envUrl = envUrl.slice(0, -1);
-const API_BASE_URL = envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
+import { API_URL } from "../config/api";
 
 /**
  * Generic fetch wrapper with error handling
  */
 async function fetchAPI(endpoint, options = {}) {
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const response = await fetch(`${API_URL}${endpoint}`, {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...options.headers,
       },
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'API request failed');
+      throw new Error(error.message || "API request failed");
     }
 
     return await response.json();
   } catch (error) {
-    console.error('API Error:', error);
+    console.error("API Error:", error);
     throw error;
   }
 }
@@ -34,18 +32,18 @@ async function fetchAPI(endpoint, options = {}) {
  */
 export async function fetchGifts(filters = {}) {
   const params = new URLSearchParams();
-  
-  if (filters.category && filters.category !== 'All') {
-    params.append('category', filters.category);
+
+  if (filters.category && filters.category !== "All") {
+    params.append("category", filters.category);
   }
-  
+
   if (filters.popular) {
-    params.append('popular', 'true');
+    params.append("popular", "true");
   }
 
   const queryString = params.toString();
-  const endpoint = `/gifts${queryString ? `?${queryString}` : ''}`;
-  
+  const endpoint = `/gifts${queryString ? `?${queryString}` : ""}`;
+
   return fetchAPI(endpoint);
 }
 
@@ -92,15 +90,15 @@ export async function fetchOrderByNumber(orderNumber) {
  */
 export async function fetchOrders(filters = {}) {
   const params = new URLSearchParams();
-  
-  if (filters.status) params.append('status', filters.status);
-  if (filters.email) params.append('email', filters.email);
-  if (filters.page) params.append('page', filters.page);
-  if (filters.limit) params.append('limit', filters.limit);
+
+  if (filters.status) params.append("status", filters.status);
+  if (filters.email) params.append("email", filters.email);
+  if (filters.page) params.append("page", filters.page);
+  if (filters.limit) params.append("limit", filters.limit);
 
   const queryString = params.toString();
-  const endpoint = `/orders${queryString ? `?${queryString}` : ''}`;
-  
+  const endpoint = `/orders${queryString ? `?${queryString}` : ""}`;
+
   return fetchAPI(endpoint);
 }
 
@@ -109,7 +107,7 @@ export async function fetchOrders(filters = {}) {
  * @returns {Promise<Object>} API health status
  */
 export async function checkAPIHealth() {
-  return fetchAPI('/health');
+  return fetchAPI("/health");
 }
 
 /**
@@ -118,19 +116,19 @@ export async function checkAPIHealth() {
  * @returns {Promise<Object>} Razorpay order details
  */
 export async function createRazorpayOrder(amount) {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const options = {
-    method: 'POST',
-    body: JSON.stringify({ amount, currency: 'INR' }),
+    method: "POST",
+    body: JSON.stringify({ amount, currency: "INR" }),
   };
-  
+
   if (token) {
     options.headers = {
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
   }
-  
-  return fetchAPI('/payment/create-order', options);
+
+  return fetchAPI("/payment/create-order", options);
 }
 
 /**
@@ -139,17 +137,17 @@ export async function createRazorpayOrder(amount) {
  * @returns {Promise<Object>} Created order object
  */
 export async function verifyPayment(paymentData) {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const options = {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify(paymentData),
   };
-  
+
   if (token) {
     options.headers = {
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
   }
-  
-  return fetchAPI('/payment/verify', options);
+
+  return fetchAPI("/payment/verify", options);
 }

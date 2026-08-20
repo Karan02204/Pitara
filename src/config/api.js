@@ -1,5 +1,6 @@
 // API Configuration
-let envUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-if (envUrl.endsWith('/')) envUrl = envUrl.slice(0, -1);
-export const API_URL = envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
-export const API_BASE_URL = API_URL.replace(/\/api$/, '');
+// The frontend and backend share the same origin:
+//  - Production: Vercel serves the static build AND routes /api/* to the serverless function.
+//  - Development: Vite proxies /api to the backend (see vite.config.js -> server.proxy).
+// So a plain relative /api works in every environment — no env vars, no URL resolution.
+export const API_URL = '/api';
