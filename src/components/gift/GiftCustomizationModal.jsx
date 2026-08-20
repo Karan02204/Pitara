@@ -34,12 +34,13 @@ const GiftCustomizationModal = ({ gift, isOpen, onClose }) => {
     };
     const handleAddToCart = () => {
         addItem({
-            id: `${gift.id}-${Date.now()}`,
-            name: gift.name,
-            basePrice: gift.basePrice,
-            image: gift.image,
-            quantity,
-            customization,
+          id: `${gift._id}-${Date.now()}`,
+          _id: gift._id,
+          name: gift.name,
+          basePrice: gift.basePrice,
+          image: gift.image,
+          quantity,
+          customization,
         });
         
         // TODO: Add your Lottie animation here for add to cart

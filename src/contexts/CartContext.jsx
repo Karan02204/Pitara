@@ -41,8 +41,14 @@ export const CartProvider = ({ children }) => {
 
     const addItem = useCallback((newItem) => {
         setItems(prev => {
-            const existingIndex = prev.findIndex(item => item.id === newItem.id &&
-                JSON.stringify(item.customization) === JSON.stringify(newItem.customization));
+            const existingIndex = prev.findIndex(
+              (item) =>
+                item._id &&
+                newItem._id &&
+                item._id === newItem._id &&
+                JSON.stringify(item.customization) ===
+                  JSON.stringify(newItem.customization),
+            );
             if (existingIndex >= 0) {
                 const updated = [...prev];
                 updated[existingIndex] = {
