@@ -23,7 +23,7 @@ const Hampers = () => {
 
     // Fetch gifts from backend
     const { data: gifts = [], isLoading } = useQuery({
-        queryKey: ['gifts'],
+        queryKey: ['gifts' ,'All'],
         queryFn: () => fetchGifts({}),
     });
     const toggleGift = (gift) => {
